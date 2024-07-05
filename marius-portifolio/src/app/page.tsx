@@ -17,7 +17,7 @@ export default function Home() {
       className="z-20 relative h-[100dvh] bg-white  overflow-x-hidden"
     >
       <div className="z-20">
-        <Card className="z-20 w-full md:w-[600px] m-10 mb-0 bg-transparent rounded-none shadow-none border-none">
+        <Card className="z-20 w-full md:w-[600px] md:m-10 mb-0 bg-transparent rounded-none shadow-none border-none">
           <CardHeader>
             <CardTitle className="md:text-2xl text-xl">
               <span>

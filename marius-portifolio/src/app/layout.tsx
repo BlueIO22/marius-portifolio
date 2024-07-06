@@ -2,6 +2,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
 config.autoAddCss = false;
 
@@ -19,7 +20,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <nav className="w-full sticky h-[80px] bg-primary top-0 z-[100]">
+          <div className="container flex items h-full items-center justify-start">
+            <Link className="group " href="/">
+              <span className="group-hover:border-dashed border-2 border-primary group-hover:border-b-white block md:inline bg-primary md:text-3xl text-white pb-2">
+                <span className="bg-white p-1 shadow-xl border-white text-primary">
+                  Marius Sørenes
+                </span>{" "}
+                sin portifolio
+              </span>{" "}
+            </Link>
+          </div>
+        </nav>
+        {children}
+      </body>
     </html>
   );
 }

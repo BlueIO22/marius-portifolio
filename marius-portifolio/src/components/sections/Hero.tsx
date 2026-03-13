@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { SiteContent } from "@/data/content";
+import { motion } from "framer-motion";
 
 interface HeroProps {
   data: SiteContent["hero"];
@@ -10,7 +10,9 @@ interface HeroProps {
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1]; // expo out — very snappy
 
 function goto(href: string) {
-  document.getElementById(href.replace("#", ""))?.scrollIntoView({ behavior: "smooth" });
+  document
+    .getElementById(href.replace("#", ""))
+    ?.scrollIntoView({ behavior: "smooth" });
 }
 
 // Each word of the name drops in with a slight skew — feels hand-crafted
@@ -48,7 +50,6 @@ export function Hero({ data }: HeroProps) {
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 w-full py-28 lg:py-36">
         <div className="grid lg:grid-cols-[1fr_360px] gap-16 items-center">
-
           {/* Left: typography block */}
           <div>
             {/* Role tag */}
@@ -86,7 +87,10 @@ export function Hero({ data }: HeroProps) {
               transition={{ duration: 0.5, delay: 0.65, ease: EASE }}
               className="flex flex-wrap gap-3"
             >
-              <button className="btn-primary" onClick={() => goto(data.ctaLink)}>
+              <button
+                className="btn-primary"
+                onClick={() => goto(data.ctaLink)}
+              >
                 {data.ctaText} →
               </button>
               {data.secondaryCtaText && (
@@ -113,21 +117,12 @@ export function Hero({ data }: HeroProps) {
               {/* Foreground card */}
               <div className="relative bg-[#0c1117] rounded-3xl p-8 text-white">
                 <p className="text-teal-400 text-xs font-bold uppercase tracking-widest mb-4">
-                  Om meg
+                  Romarane 5:1
                 </p>
                 <p className="text-2xl font-black leading-snug mb-6">
-                  Eg lagar ting på nett som folk faktisk likar å bruka.
+                  Når vi no har vorte rettferdige ved tru, har vi fred med Gud
+                  ved vår Herre Jesus Kristus.
                 </p>
-                <div className="flex flex-wrap gap-2">
-                  {["Next.js", "TypeScript", "Sanity"].map((t) => (
-                    <span
-                      key={t}
-                      className="text-xs font-semibold bg-white/10 px-3 py-1 rounded-full"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
               </div>
             </div>
           </motion.div>

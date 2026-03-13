@@ -1,10 +1,16 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
+import { SiteContent } from "@/data/content";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  Cross2Icon,
+  ExternalLinkIcon,
+  GitHubLogoIcon,
+} from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { SiteContent } from "@/data/content";
-import { Badge } from "@/components/ui/badge";
-import { GitHubLogoIcon, ExternalLinkIcon, ChevronLeftIcon, ChevronRightIcon, Cross2Icon } from "@radix-ui/react-icons";
 
 interface ProjectsProps {
   data: SiteContent["projects"];
@@ -15,7 +21,11 @@ const SLIDE_EASE: [number, number, number, number] = [0.4, 0, 0.2, 1];
 
 // ── Lightbox ──────────────────────────────────────────────────────────────────
 
-function Lightbox({ images, startIdx, onClose }: {
+function Lightbox({
+  images,
+  startIdx,
+  onClose,
+}: {
   images: string[];
   startIdx: number;
   onClose: () => void;
@@ -23,14 +33,17 @@ function Lightbox({ images, startIdx, onClose }: {
   const [idx, setIdx] = useState(startIdx);
   const [dir, setDir] = useState(1);
 
-  const go = (next: number, d: number) => { setDir(d); setIdx(next); };
+  const go = (next: number, d: number) => {
+    setDir(d);
+    setIdx(next);
+  };
   const prev = () => go((idx - 1 + images.length) % images.length, -1);
   const next = () => go((idx + 1) % images.length, 1);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowLeft")  prev();
+      if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
     };
     window.addEventListener("keydown", onKey);
@@ -44,11 +57,18 @@ function Lightbox({ images, startIdx, onClose }: {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
       className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10"
-      style={{ backdropFilter: "blur(18px)", WebkitBackdropFilter: "blur(18px)", backgroundColor: "rgba(0,0,0,0.7)" }}
+      style={{
+        backdropFilter: "blur(18px)",
+        WebkitBackdropFilter: "blur(18px)",
+        backgroundColor: "rgba(0,0,0,0.7)",
+      }}
       onClick={onClose}
     >
       {/* Image */}
-      <div className="relative max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="relative max-w-5xl w-full"
+        onClick={(e) => e.stopPropagation()}
+      >
         <AnimatePresence mode="wait" custom={dir}>
           <motion.img
             key={idx}
@@ -58,7 +78,7 @@ function Lightbox({ images, startIdx, onClose }: {
             variants={{
               enter: (d: number) => ({ x: d > 0 ? 60 : -60, opacity: 0 }),
               center: { x: 0, opacity: 1 },
-              exit:  (d: number) => ({ x: d > 0 ? -60 : 60, opacity: 0 }),
+              exit: (d: number) => ({ x: d > 0 ? -60 : 60, opacity: 0 }),
             }}
             initial="enter"
             animate="center"
@@ -71,10 +91,16 @@ function Lightbox({ images, startIdx, onClose }: {
         {/* Prev / Next */}
         {images.length > 1 && (
           <>
-            <button onClick={prev} className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-lg transition-colors">
+            <button
+              onClick={prev}
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-lg transition-colors"
+            >
               <ChevronLeftIcon className="w-5 h-5 text-slate-800" />
             </button>
-            <button onClick={next} className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-lg transition-colors">
+            <button
+              onClick={next}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-lg transition-colors"
+            >
               <ChevronRightIcon className="w-5 h-5 text-slate-800" />
             </button>
           </>
@@ -84,7 +110,9 @@ function Lightbox({ images, startIdx, onClose }: {
         {images.length > 1 && (
           <div className="flex justify-center gap-2 mt-4">
             {images.map((_, i) => (
-              <button key={i} onClick={() => go(i, i > idx ? 1 : -1)}
+              <button
+                key={i}
+                onClick={() => go(i, i > idx ? 1 : -1)}
                 className={`rounded-full transition-all duration-200 ${i === idx ? "w-5 h-2 bg-white" : "w-2 h-2 bg-white/40 hover:bg-white/70"}`}
               />
             ))}
@@ -93,7 +121,11 @@ function Lightbox({ images, startIdx, onClose }: {
       </div>
 
       {/* Close */}
-      <button onClick={onClose} className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition-colors" aria-label="Lukk">
+      <button
+        onClick={onClose}
+        className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition-colors"
+        aria-label="Lukk"
+      >
         <Cross2Icon className="w-5 h-5" />
       </button>
     </motion.div>
@@ -107,7 +139,10 @@ function FlipGallery({ images }: { images: string[] }) {
   const [dir, setDir] = useState(1);
   const [lightbox, setLightbox] = useState(false);
 
-  const go = (next: number, d: number) => { setDir(d); setIdx(next); };
+  const go = (next: number, d: number) => {
+    setDir(d);
+    setIdx(next);
+  };
   const prev = () => go((idx - 1 + images.length) % images.length, -1);
   const next = () => go((idx + 1) % images.length, 1);
 
@@ -116,7 +151,7 @@ function FlipGallery({ images }: { images: string[] }) {
       <div className="relative select-none pr-4 pb-4">
         <div className="absolute top-4 left-4 right-0 bottom-0 bg-teal-400 rounded-3xl" />
 
-        <div className="relative overflow-hidden rounded-3xl aspect-[4/3] bg-slate-100">
+        <div className="relative overflow-hidden rounded-3xl aspect-[16/9] bg-slate-100">
           <AnimatePresence mode="wait" custom={dir}>
             <motion.img
               key={idx}
@@ -126,14 +161,14 @@ function FlipGallery({ images }: { images: string[] }) {
               variants={{
                 enter: (d: number) => ({ x: d > 0 ? 40 : -40, opacity: 0 }),
                 center: { x: 0, opacity: 1 },
-                exit:  (d: number) => ({ x: d > 0 ? -40 : 40, opacity: 0 }),
+                exit: (d: number) => ({ x: d > 0 ? -40 : 40, opacity: 0 }),
               }}
               initial="enter"
               animate="center"
               exit="exit"
               transition={{ duration: 0.3, ease: SLIDE_EASE }}
               onClick={() => setLightbox(true)}
-              className="absolute inset-0 w-full h-full object-cover cursor-zoom-in"
+              className="absolute inset-0 w-full h-full object-contain cursor-zoom-in"
             />
           </AnimatePresence>
 
@@ -144,10 +179,18 @@ function FlipGallery({ images }: { images: string[] }) {
 
           {images.length > 1 && (
             <>
-              <button onClick={prev} className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow transition-colors" aria-label="Førre bilete">
+              <button
+                onClick={prev}
+                className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow transition-colors"
+                aria-label="Førre bilete"
+              >
                 <ChevronLeftIcon className="w-4 h-4 text-slate-700" />
               </button>
-              <button onClick={next} className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow transition-colors" aria-label="Neste bilete">
+              <button
+                onClick={next}
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full bg-white/80 hover:bg-white flex items-center justify-center shadow transition-colors"
+                aria-label="Neste bilete"
+              >
                 <ChevronRightIcon className="w-4 h-4 text-slate-700" />
               </button>
             </>
@@ -157,7 +200,9 @@ function FlipGallery({ images }: { images: string[] }) {
         {images.length > 1 && (
           <div className="flex justify-center gap-1.5 mt-4">
             {images.map((_, i) => (
-              <button key={i} onClick={() => go(i, i > idx ? 1 : -1)}
+              <button
+                key={i}
+                onClick={() => go(i, i > idx ? 1 : -1)}
                 className={`rounded-full transition-all duration-200 ${i === idx ? "w-5 h-2 bg-teal-500" : "w-2 h-2 bg-slate-300 hover:bg-teal-300"}`}
                 aria-label={`Bilete ${i + 1}`}
               />
@@ -167,7 +212,13 @@ function FlipGallery({ images }: { images: string[] }) {
       </div>
 
       <AnimatePresence>
-        {lightbox && <Lightbox images={images} startIdx={idx} onClose={() => setLightbox(false)} />}
+        {lightbox && (
+          <Lightbox
+            images={images}
+            startIdx={idx}
+            onClose={() => setLightbox(false)}
+          />
+        )}
       </AnimatePresence>
     </>
   );
@@ -238,9 +289,15 @@ export function Projects({ data }: ProjectsProps) {
                     {project.title}
                   </h3>
 
-                  <p className="text-teal-600 font-bold text-lg mb-1">{project.subtitle}</p>
-                  <p className="text-slate-400 text-sm mb-6">{project.duration}</p>
-                  <p className="text-slate-600 leading-relaxed text-[1.05rem] mb-8">{project.description}</p>
+                  <p className="text-teal-600 font-bold text-lg mb-1">
+                    {project.subtitle}
+                  </p>
+                  <p className="text-slate-400 text-sm mb-6">
+                    {project.duration}
+                  </p>
+                  <p className="text-slate-600 leading-relaxed text-[1.05rem] mb-8">
+                    {project.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-2 mb-8">
                     {project.technologies.map((tech) => (
@@ -256,12 +313,22 @@ export function Projects({ data }: ProjectsProps) {
 
                   <div className="flex flex-wrap gap-3">
                     {project.github && (
-                      <a href={project.github} target="_blank" rel="noopener noreferrer" className="btn-primary !py-2.5 !px-5 !text-sm">
+                      <a
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-primary !py-2.5 !px-5 !text-sm"
+                      >
                         <GitHubLogoIcon className="w-4 h-4" /> GitHub
                       </a>
                     )}
                     {project.url && (
-                      <a href={project.url} target="_blank" rel="noopener noreferrer" className="btn-ghost !py-2.5 !px-5 !text-sm">
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-ghost !py-2.5 !px-5 !text-sm"
+                      >
                         <ExternalLinkIcon className="w-4 h-4" /> Sjå live
                       </a>
                     )}
@@ -270,6 +337,7 @@ export function Projects({ data }: ProjectsProps) {
 
                 {/* Flip Gallery */}
                 <motion.div
+                  className="order-first lg:order-none"
                   initial={{ opacity: 0, x: isEven ? 60 : -60 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-60px" }}

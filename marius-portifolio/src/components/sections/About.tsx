@@ -12,8 +12,8 @@ interface AboutProps {
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const stats = [
-  { value: 3, suffix: "+", label: "År med røynsle" },
-  { value: 20, suffix: "+", label: "Prosjekt leverte" },
+  { value: 7, suffix: "+", label: "År med røynsle" },
+  { value: 3, suffix: "+", label: "Prosjekt leverte" },
   { value: 15, suffix: "+", label: "Teknologiar" },
 ];
 

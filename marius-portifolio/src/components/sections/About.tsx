@@ -90,25 +90,6 @@ export function About({ data }: AboutProps) {
               />
             </div>
 
-            {/* Stats row */}
-            <div className="grid grid-cols-3 gap-4">
-              {stats.map((s, i) => (
-                <motion.div
-                  key={s.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.45, delay: i * 0.1, ease: EASE }}
-                  className="card-base p-4 text-center"
-                >
-                  <CountUp target={s.value} suffix={s.suffix} />
-                  <p className="text-slate-500 text-xs mt-1 leading-snug">
-                    {s.label}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-
             {/* LinkedIn */}
             <motion.a
               href={data.linkedin}

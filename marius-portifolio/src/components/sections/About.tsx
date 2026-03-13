@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
 import { SiteContent } from "@/data/content";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
+import { motion, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 interface AboutProps {
   data: SiteContent["about"];
@@ -12,7 +12,7 @@ interface AboutProps {
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const stats = [
-  { value: 3,  suffix: "+", label: "År med røynsle" },
+  { value: 3, suffix: "+", label: "År med røynsle" },
   { value: 20, suffix: "+", label: "Prosjekt leverte" },
   { value: 15, suffix: "+", label: "Teknologiar" },
 ];
@@ -36,7 +36,8 @@ function CountUp({ target, suffix }: { target: number; suffix: string }) {
 
   return (
     <strong ref={ref} className="block text-4xl font-black text-[#0c1117]">
-      {n}{suffix}
+      {n}
+      {suffix}
     </strong>
   );
 }
@@ -47,7 +48,6 @@ export function About({ data }: AboutProps) {
   return (
     <section id="om-meg" className="bg-white py-36 px-6 overflow-hidden">
       <div className="max-w-6xl mx-auto">
-
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 32 }}
@@ -66,7 +66,6 @@ export function About({ data }: AboutProps) {
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-start">
-
           {/* Left: photo + stats + LinkedIn */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -76,15 +75,15 @@ export function About({ data }: AboutProps) {
             className="flex flex-col gap-8"
           >
             {/* Photo */}
-            <div className="relative self-start pr-4 pb-4">
+            <div className="relative rounded-full self-start pr-4 pb-4">
               {/* Offset shadow block */}
-              <div className="absolute top-4 left-4 right-0 bottom-0 bg-teal-400 rounded-3xl" />
+              <div className="absolute top-4 left-4 right-0 bottom-0 bg-teal-400 rounded-full" />
               <img
                 src={data.image}
                 alt="Marius Sørenes"
                 width={400}
                 height={400}
-                className="relative w-96 h-96 object-cover rounded-3xl"
+                className="relative rounded-full w-96 h-96 object-cover "
               />
             </div>
 
@@ -100,7 +99,9 @@ export function About({ data }: AboutProps) {
                   className="card-base p-4 text-center"
                 >
                   <CountUp target={s.value} suffix={s.suffix} />
-                  <p className="text-slate-500 text-xs mt-1 leading-snug">{s.label}</p>
+                  <p className="text-slate-500 text-xs mt-1 leading-snug">
+                    {s.label}
+                  </p>
                 </motion.div>
               ))}
             </div>
@@ -133,7 +134,11 @@ export function About({ data }: AboutProps) {
                   initial={{ opacity: 0, y: 16 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.15 + i * 0.1, ease: EASE }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.15 + i * 0.1,
+                    ease: EASE,
+                  }}
                   className="text-slate-600 leading-relaxed text-[1.05rem]"
                 >
                   {para}
@@ -144,15 +149,26 @@ export function About({ data }: AboutProps) {
             {/* Tech tags — spring-pop */}
             <div className="flex flex-wrap gap-2">
               {[
-                "TypeScript", "React", "Next.js", "Node.js",
-                "Sanity", "Tailwind CSS", "PostgreSQL", "Docker",
+                "TypeScript",
+                "React",
+                "Next.js",
+                "Node.js",
+                "Sanity",
+                "Tailwind CSS",
+                "PostgreSQL",
+                "Docker",
               ].map((tag, i) => (
                 <motion.span
                   key={tag}
                   initial={{ scale: 0.6, opacity: 0 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true }}
-                  transition={{ type: "spring", stiffness: 350, damping: 18, delay: 0.3 + i * 0.06 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 350,
+                    damping: 18,
+                    delay: 0.3 + i * 0.06,
+                  }}
                   className="bg-teal-50 text-teal-800 border border-teal-200 text-sm font-semibold px-3.5 py-1.5 rounded-full"
                 >
                   {tag}

@@ -77,13 +77,16 @@ export function About({ data }: AboutProps) {
             {/* Photo */}
             <div className="relative rounded-full self-start pr-4 pb-4">
               {/* Offset shadow block */}
-              <div className="absolute top-4 left-4 right-0 bottom-0 bg-teal-400 rounded-full" />
+              <div
+                className="absolute top-4 left-4 right-0 bottom-0 bg-teal-400 rounded-full"
+                style={{ borderRadius: "1.5rem" }}
+              />
               <img
                 src={data.image}
                 alt="Marius Sørenes"
                 width={400}
                 height={400}
-                className="relative rounded-full w-96 h-96 object-cover "
+                className="relative lg:w-96 lg:h-96 h-[260px] w-[260px] object-cover rounded-3xl"
               />
             </div>
 

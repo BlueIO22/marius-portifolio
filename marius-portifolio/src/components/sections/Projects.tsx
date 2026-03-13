@@ -208,7 +208,7 @@ export function Projects({ data }: ProjectsProps) {
         return (
           <section
             key={project.id}
-            className={`${sectionBg[i % 2]} py-36 px-6 overflow-hidden border-t border-slate-100`}
+            className={`${sectionBg[i % 2]} py-20 px-6 overflow-hidden border-t border-slate-100`}
           >
             <div className="max-w-6xl mx-auto">
               <div

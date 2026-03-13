@@ -224,7 +224,7 @@ export function Projects({ data }: ProjectsProps) {
                   transition={{ duration: 0.65, ease: EASE }}
                 >
                   <p
-                    className="font-black text-teal-100 select-none leading-none mb-2"
+                    className="font-black text-teal-300 select-none leading-none mb-2"
                     style={{ fontSize: "clamp(5rem, 12vw, 9rem)" }}
                     aria-hidden
                   >

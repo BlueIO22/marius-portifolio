@@ -113,7 +113,7 @@ export function Hero({ data }: HeroProps) {
               {/* Foreground card */}
               <div className="relative bg-[#0c1117] rounded-3xl p-8 text-white">
                 <p className="text-teal-400 text-xs font-bold uppercase tracking-widest mb-4">
-                  // Om meg
+                  Om meg
                 </p>
                 <p className="text-2xl font-black leading-snug mb-6">
                   Eg lagar ting på nett som folk faktisk likar å bruka.

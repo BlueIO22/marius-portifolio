@@ -12,8 +12,8 @@ interface AboutProps {
 const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
 const stats = [
-  { value: 3, suffix: "+", label: "År med røynsle" },
-  { value: 20, suffix: "+", label: "Prosjekt leverte" },
+  { value: 7, suffix: "+", label: "År med røynsle" },
+  { value: 3, suffix: "+", label: "Prosjekt leverte" },
   { value: 15, suffix: "+", label: "Teknologiar" },
 ];
 
@@ -88,25 +88,6 @@ export function About({ data }: AboutProps) {
                 height={400}
                 className="relative lg:w-96 lg:h-96 h-[260px] w-[260px] object-cover rounded-3xl"
               />
-            </div>
-
-            {/* Stats row */}
-            <div className="grid grid-cols-3 gap-4">
-              {stats.map((s, i) => (
-                <motion.div
-                  key={s.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.45, delay: i * 0.1, ease: EASE }}
-                  className="card-base p-4 text-center"
-                >
-                  <CountUp target={s.value} suffix={s.suffix} />
-                  <p className="text-slate-500 text-xs mt-1 leading-snug">
-                    {s.label}
-                  </p>
-                </motion.div>
-              ))}
             </div>
 
             {/* LinkedIn */}

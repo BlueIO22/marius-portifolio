@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "WebFetch(domain:joemihavel.com)",
+      "mcp__Sanity__publish_documents"
+    ]
+  }
+}

@@ -14,7 +14,7 @@ export const project = defineType({
     defineField({
       name: 'subtitle',
       title: 'Undertittel',
-      description: 'En kort undertittel for prosjektet',
+      description: 'Ei kort undertittel for prosjektet',
       type: 'string',
     }),
     defineField({
@@ -27,15 +27,22 @@ export const project = defineType({
       },
     }),
     defineField({
+      name: 'featured',
+      title: 'Utvald prosjekt',
+      description: 'Marker prosjektet som utvald (vises med badge)',
+      type: 'boolean',
+      initialValue: false,
+    }),
+    defineField({
       name: 'author',
-      title: 'Forfatter',
-      description: 'Forfatteren av prosjektet',
+      title: 'Forfattar',
+      description: 'Forfattaren av prosjektet',
       type: 'reference',
       to: {type: 'author'},
     }),
     defineField({
       name: 'images',
-      title: 'Bilder',
+      title: 'Bilete',
       type: 'array',
       of: [
         defineArrayMember({
@@ -46,7 +53,7 @@ export const project = defineType({
     }),
     defineField({
       name: 'technologies',
-      title: 'Teknologier',
+      title: 'Teknologiar',
       type: 'array',
       of: [
         defineArrayMember({
@@ -57,7 +64,7 @@ export const project = defineType({
     }),
     defineField({
       name: 'publishedAt',
-      title: 'Published at',
+      title: 'Publisert',
       type: 'datetime',
     }),
     defineField({
@@ -68,20 +75,29 @@ export const project = defineType({
     }),
     defineField({
       name: 'duration',
-      title: 'Varighet',
-      description: 'Hvor lang tid tok prosjektet?',
+      title: 'Periode',
+      description: 'T.d. «2023 — 2024»',
       type: 'string',
     }),
     defineField({
       name: 'url',
-      title: 'URL',
-      description: 'URL til prosjektet',
+      title: 'Lenkje til prosjektet',
+      description: 'URL til live-versjon (om det finst)',
       type: 'url',
     }),
     defineField({
       name: 'description',
-      title: 'Beskrivelse',
+      title: 'Skildring',
+      description: 'Ein kort tekst som skildrar prosjektet',
       type: 'text',
+      rows: 4,
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      subtitle: 'subtitle',
+      media: 'images.0',
+    },
+  },
 })

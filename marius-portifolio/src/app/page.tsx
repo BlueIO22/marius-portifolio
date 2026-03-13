@@ -1,124 +1,84 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { client } from "@/util/sanity";
-import { faCalendarDay } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { PortableText } from "next-sanity";
-import Link from "next/link";
+export const revalidate = false; // static until webhook fires
 
-async function fetchAuthor() {
-  const response = await client.fetch(`*[_type == "author"] {
-    name,
-    bio,
-    "image": image.asset->url
-  }`);
-
-  return response[0];
-}
-
-async function fetchProjects() {
-  const response = await client.fetch(`*[_type == "project"] {
-    title,
-    subtitle,
-    description,
-    "image": images[0].asset->url,
-    duration,
-    url,
-    "slug": slug.current,
-    "technologies": technologies[]->title
-  }`);
-
-  return response as Project[];
-}
-
-export type Project = {
-  title: string;
-  subtitle: string;
-  description: string;
-  image: string;
-  duration: string;
-  url: string;
-  slug: string;
-};
+import { Hero } from "@/components/sections/Hero";
+import { About } from "@/components/sections/About";
+import { Faith } from "@/components/sections/Faith";
+import { Projects } from "@/components/sections/Projects";
+import { Contact } from "@/components/sections/Contact";
+import { Divider } from "@/components/Divider";
+import { content as fallback, SiteContent } from "@/data/content";
+import { fetchSiteSettings, fetchProjects } from "@/util/sanity";
 
 export default async function Home() {
-  const projects = await fetchProjects();
-  const author = await fetchAuthor();
+  let data: SiteContent = fallback;
+
+  try {
+    const [settings, projects] = await Promise.all([
+      fetchSiteSettings(),
+      fetchProjects(),
+    ]);
+
+    if (settings) {
+      data = {
+        meta: {
+          title: settings.metaTitle || fallback.meta.title,
+          description: settings.metaDescription || fallback.meta.description,
+        },
+        hero: {
+          name: settings.heroName || fallback.hero.name,
+          title: settings.heroTitle || fallback.hero.title,
+          subtitle: settings.heroSubtitle || fallback.hero.subtitle,
+          ctaText: settings.heroCta || fallback.hero.ctaText,
+          ctaLink: "#prosjekt",
+          secondaryCtaText: settings.heroSecondaryCta || fallback.hero.secondaryCtaText,
+          secondaryCtaLink: "#kontakt",
+        },
+        about: {
+          heading: settings.aboutHeading || fallback.about.heading,
+          bio: settings.aboutBio || fallback.about.bio,
+          image: settings.aboutImage || fallback.about.image,
+          linkedin: settings.linkedin || fallback.about.linkedin,
+        },
+        projects:
+          Array.isArray(projects) && projects.length > 0
+            ? projects.map((p: Record<string, unknown>, i: number) => ({
+                id: (p._id as string) || `proj-${i}`,
+                title: (p.title as string) || "",
+                subtitle: (p.subtitle as string) || "",
+                description: (p.description as string) || "",
+                images: Array.isArray(p.images) && (p.images as string[]).filter(Boolean).length > 0
+                  ? (p.images as string[]).filter(Boolean)
+                  : [`https://picsum.photos/seed/proj${i + 1}/800/500`],
+                technologies: (p.technologies as string[]) || [],
+                github: p.github as string | undefined,
+                url: p.url as string | undefined,
+                duration: (p.duration as string) || "",
+                featured: (p.featured as boolean) || false,
+              }))
+            : fallback.projects,
+        contact: {
+          heading: settings.contactHeading || fallback.contact.heading,
+          subheading: settings.contactSubheading || fallback.contact.subheading,
+          email: settings.email || fallback.contact.email,
+          social:
+            Array.isArray(settings.socialLinks) && settings.socialLinks.length > 0
+              ? settings.socialLinks
+              : fallback.contact.social,
+        },
+      };
+    }
+  } catch (err) {
+    console.error("[portfolio] Sanity fetch failed, using fallback:", err);
+  }
 
   return (
-    <main
-      suppressHydrationWarning
-      className="z-20 relative  bg-primary  overflow-x-hidden"
-    >
-      <div className="z-20 container">
-        <Card className="lg:p-10 bg-white md:mt-[100px] md:mb-[100px] rounded-none border-none shadow-none">
-          <CardHeader className="lg:text-3xl text-2xl">
-            Litt om {author.name}
-          </CardHeader>
-          <CardContent>
-            <div>
-              <div className="col-span-2 flex md:flex-row flex-col items-center justify-center w-full">
-                <img
-                  height={200}
-                  width={200}
-                  className="mr-5"
-                  src={author.image}
-                  alt=""
-                />
-                <div className="mt-5 md:mt-0">
-                  <PortableText value={author.bio} />
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="mt-5 md:mt-[100px] md:mb-[100px] p-0 bg-transparent border-none shadow-none">
-          <CardHeader className="mb-2 text-2xl font-bold shadow-none p-0  text-white ">
-            Mine prosjekter
-          </CardHeader>
-          <CardContent className="p-0">
-            <p className="mb-5 text-white">
-              Her er nokre av mine prosjekter som eg har jobbet med
-            </p>
-            <div className="flex flex-row flex-wrap gap-5">
-              {projects.map((project: Project, index: number) => (
-                <Card
-                  key={index}
-                  className="shadow-lg rounded-none border-none w-[600px]"
-                >
-                  <CardHeader className="cool-bg text-2xl">
-                    {project.title}
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <img
-                      className="w-full h-full object-cover object-top brightness-50"
-                      src={project.image}
-                    ></img>
-                    <div className="p-5 flex flex-col gap-2">
-                      <p className="text-tiny">
-                        <FontAwesomeIcon icon={faCalendarDay} />{" "}
-                        {project.duration}
-                      </p>
-                      <p className="text-xl">{project.description}</p>
-                    </div>
-                  </CardContent>
-                  <CardFooter>
-                    <Link href={"prosjekter/" + project.slug}>
-                      <button className="bg-primary text-white p-2 rounded-none m-auto">
-                        Les mer
-                      </button>
-                    </Link>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+    <main className="relative overflow-x-hidden">
+      <Hero data={data.hero} />
+      <Divider />
+      <About data={data.about} />
+      <Faith />
+      <Projects data={data.projects} />
+      <Contact data={data.contact} />
     </main>
   );
 }

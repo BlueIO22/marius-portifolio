@@ -80,7 +80,7 @@ export function Contact({ data }: ContactProps) {
           <p className="text-slate-500 text-lg mt-4 max-w-lg">{data.subheading}</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-[1fr_340px] gap-10 items-start">
+        <div className="grid md:grid-cols-2 gap-10 items-start">
 
           {/* Right: links */}
           <motion.div

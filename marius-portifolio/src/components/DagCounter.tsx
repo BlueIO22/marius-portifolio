@@ -22,6 +22,19 @@ export default function DagCounter() {
   const duration = 1800;
 
   useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    const prevHtmlBg = html.style.backgroundColor;
+    const prevBodyBg = body.style.backgroundColor;
+    html.style.backgroundColor = "#020308";
+    body.style.backgroundColor = "#020308";
+    return () => {
+      html.style.backgroundColor = prevHtmlBg;
+      body.style.backgroundColor = prevBodyBg;
+    };
+  }, []);
+
+  useEffect(() => {
     function tick(now: number) {
       if (startRef.current === null) startRef.current = now;
       const elapsed = now - startRef.current;
@@ -38,7 +51,7 @@ export default function DagCounter() {
   }, [target]);
 
   return (
-    <div className="relative min-h-dvh w-full flex items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_50%_40%,#1a1f4e_0%,#0b0d24_55%,#020308_100%)]">
+    <div className="relative h-full w-full flex items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_50%_40%,#1a1f4e_0%,#0b0d24_55%,#020308_100%)]">
       {/* Starfield */}
       <div
         className="stars-small absolute inset-0 pointer-events-none opacity-70 animate-twinkle-3"

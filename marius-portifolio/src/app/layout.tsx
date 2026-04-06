@@ -1,4 +1,4 @@
-import { Nav } from "@/components/Nav";
+import { LayoutShell } from "@/components/LayoutShell";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -17,16 +17,7 @@ export default function RootLayout({
   return (
     <html lang="nn" className="scroll-smooth">
       <body className={`${inter.variable} font-sans bg-white text-[#0c1117] antialiased`}>
-        <Nav />
-        {children}
-
-        {/* Footer */}
-        <footer className="border-t border-slate-100 py-8 px-6 text-center text-sm text-slate-400">
-          <span>© {new Date().getFullYear()} Marius Sørenes — laga med </span>
-          <span className="text-teal-500 font-semibold">Next.js</span>
-          <span> + </span>
-          <span className="text-teal-500 font-semibold">Sanity</span>
-        </footer>
+        <LayoutShell>{children}</LayoutShell>
       </body>
     </html>
   );

@@ -119,10 +119,10 @@ export default function DagCounter() {
         />
 
         <p className="uppercase tracking-[0.15em] text-[#c8d0e8] text-[clamp(0.85rem,2.8vw,1.15rem)] mb-[0.4rem]">
-          siden jul 2025
+          siden sommer 2026
         </p>
         <p className="text-[#5a6282] text-[clamp(0.7rem,2vw,0.85rem)] tracking-[0.08em]">
-          25. desember 2025
+          24. juni 2026
         </p>
       </div>
 

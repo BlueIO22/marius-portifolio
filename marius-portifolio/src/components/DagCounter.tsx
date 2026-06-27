@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 function computeDays(): number {
-  const christmas = new Date(2026, 6, 24); // Jan 24 2026, midnight local
+  const christmas = new Date(2026, 24, 6); // Jan 24 2026, midnight local
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const ms = today.getTime() - christmas.getTime();

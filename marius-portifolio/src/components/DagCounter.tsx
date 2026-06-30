@@ -7,7 +7,7 @@ function computeDays(): number {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const ms = today.getTime() - christmas.getTime();
-  return Math.max(0, Math.floor(ms / (1000 * 60 * 60 * 24)) + 1);
+  return Math.max(0, Math.floor(ms / (1000 * 60 * 60 * 24)));
 }
 
 function easeOutExpo(t: number): number {

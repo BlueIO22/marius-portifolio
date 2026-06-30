@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrophy, faSun } from "@fortawesome/free-solid-svg-icons";
 
 function computeDays(): number {
   const summer = new Date(2026, 5, 24); // June 24 2026, midnight local
@@ -65,8 +67,9 @@ export default function DagCounter() {
         {HIGHLIGHTS.map((n, i) => (
           <span
             key={i}
-            className="text-[clamp(0.75rem,2vw,0.9rem)] font-black text-[#0c4a6e] tracking-tight leading-none sm:text-right"
+            className="flex items-center gap-1 text-[clamp(0.75rem,2vw,0.9rem)] font-black text-[#0c4a6e] tracking-tight leading-none"
           >
+            <FontAwesomeIcon icon={faTrophy} className="text-black shrink-0" style={{ height: "0.9rem", width: "auto" }} aria-hidden="true" />
             {n.toLocaleString()}
           </span>
         ))}
@@ -75,31 +78,12 @@ export default function DagCounter() {
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center text-center px-6 py-8 select-none">
         {/* Sun icon */}
-        <div
-          className="text-[#f59e0b] drop-shadow-[0_0_16px_#fbbf2480] mb-[clamp(1rem,3vw,2rem)] w-[clamp(48px,8vw,72px)] h-[clamp(48px,8vw,72px)]"
+        <FontAwesomeIcon
+          icon={faSun}
+          className="text-[#f59e0b] drop-shadow-[0_0_16px_#fbbf2480] mb-[clamp(1rem,3vw,2rem)]"
+          style={{ height: "clamp(48px,8vw,72px)", width: "auto", animation: "spin-slow 90s linear infinite, sun-pulse 3s ease-in-out infinite" }}
           aria-hidden="true"
-        >
-          <svg
-            viewBox="0 0 64 64"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle cx="32" cy="32" r="13" fill="currentColor" />
-            {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => (
-              <line
-                key={i}
-                x1="32"
-                y1="8"
-                x2="32"
-                y2="14"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                transform={`rotate(${deg} 32 32)`}
-              />
-            ))}
-          </svg>
-        </div>
+        />
 
         <p className="uppercase tracking-[0.25em] text-[#0c4a6e] text-[clamp(0.7rem,2.5vw,1rem)] mb-[clamp(1rem,4vw,2.5rem)] font-semibold">
           Hvor mange dager
@@ -136,6 +120,7 @@ export default function DagCounter() {
           24. juni 2026
         </p>
       </div>
+      <style>{`@keyframes spin-slow { from { transform: rotate(0deg) scale(1); } to { transform: rotate(360deg) scale(1); } } @keyframes sun-pulse { 0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px #fbbf24); } 50% { opacity: 0.75; filter: drop-shadow(0 0 24px #f59e0b); } }`}</style>
     </div>
   );
 }

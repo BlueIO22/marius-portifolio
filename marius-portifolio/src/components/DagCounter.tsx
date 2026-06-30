@@ -3,16 +3,18 @@
 import { useEffect, useRef, useState } from "react";
 
 function computeDays(): number {
-  const christmas = new Date(2026, 5, 24); // June 24 2026, midnight local
+  const summer = new Date(2026, 5, 24); // June 24 2026, midnight local
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const ms = today.getTime() - christmas.getTime();
+  const ms = today.getTime() - summer.getTime();
   return Math.max(0, Math.floor(ms / (1000 * 60 * 60 * 24)));
 }
 
 function easeOutExpo(t: number): number {
   return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
 }
+
+const HIGHLIGHTS = [181];
 
 export default function DagCounter() {
   const target = computeDays();
@@ -26,8 +28,8 @@ export default function DagCounter() {
     const body = document.body;
     const prevHtmlBg = html.style.backgroundColor;
     const prevBodyBg = body.style.backgroundColor;
-    html.style.backgroundColor = "#020308";
-    body.style.backgroundColor = "#020308";
+    html.style.backgroundColor = "#e0f2fe";
+    body.style.backgroundColor = "#e0f2fe";
     return () => {
       html.style.backgroundColor = prevHtmlBg;
       body.style.backgroundColor = prevBodyBg;
@@ -51,26 +53,30 @@ export default function DagCounter() {
   }, [target]);
 
   return (
-    <div className="relative h-full w-full flex items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_50%_40%,#1a1f4e_0%,#0b0d24_55%,#020308_100%)]">
-      {/* Starfield */}
+    <div className="relative h-full w-full flex items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#38bdf8_0%,#bae6fd_45%,#fef9c3_100%)]">
+      {/* Sun glow */}
       <div
-        className="stars-small absolute inset-0 pointer-events-none opacity-70 animate-twinkle-3"
-        aria-hidden="true"
-      />
-      <div
-        className="stars-medium absolute inset-0 pointer-events-none opacity-80 animate-twinkle-5"
-        aria-hidden="true"
-      />
-      <div
-        className="stars-large absolute inset-0 pointer-events-none opacity-90 animate-twinkle-7"
+        className="absolute top-[-8%] left-1/2 -translate-x-1/2 w-[clamp(120px,30vw,260px)] h-[clamp(120px,30vw,260px)] rounded-full bg-[radial-gradient(circle,#fde68a_0%,#fbbf24_40%,transparent_70%)] opacity-70 blur-2xl pointer-events-none"
         aria-hidden="true"
       />
 
+      {/* Highlights panel — top-right desktop, bottom-center mobile */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 sm:bottom-auto sm:top-6 sm:right-6 sm:left-auto sm:translate-x-0 flex flex-row sm:flex-col gap-2 sm:gap-1.5 px-4 py-2 sm:px-3 sm:py-3 rounded-2xl bg-white/30 backdrop-blur-sm border border-white/50 shadow-sm pointer-events-none select-none">
+        {HIGHLIGHTS.map((n, i) => (
+          <span
+            key={i}
+            className="text-[clamp(0.75rem,2vw,0.9rem)] font-black text-[#0c4a6e] tracking-tight leading-none sm:text-right"
+          >
+            {n.toLocaleString()}
+          </span>
+        ))}
+      </div>
+
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center text-center px-6 py-8 select-none">
-        {/* Star icon */}
+        {/* Sun icon */}
         <div
-          className="text-[#f5c842] drop-shadow-[0_0_12px_#f5c84280] animate-rotate-star mb-[clamp(1rem,3vw,2rem)] w-[clamp(48px,8vw,72px)] h-[clamp(48px,8vw,72px)]"
+          className="text-[#f59e0b] drop-shadow-[0_0_16px_#fbbf2480] mb-[clamp(1rem,3vw,2rem)] w-[clamp(48px,8vw,72px)] h-[clamp(48px,8vw,72px)]"
           aria-hidden="true"
         >
           <svg
@@ -78,60 +84,58 @@ export default function DagCounter() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              d="M32 4 L34.5 28 L58 32 L34.5 36 L32 60 L29.5 36 L6 32 L29.5 28 Z"
-              fill="currentColor"
-            />
-            <path
-              d="M32 14 L33.2 29 L48 32 L33.2 35 L32 50 L30.8 35 L16 32 L30.8 29 Z"
-              fill="currentColor"
-              opacity="0.4"
-            />
+            <circle cx="32" cy="32" r="13" fill="currentColor" />
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => (
+              <line
+                key={i}
+                x1="32"
+                y1="8"
+                x2="32"
+                y2="14"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                transform={`rotate(${deg} 32 32)`}
+              />
+            ))}
           </svg>
         </div>
 
-        <p className="uppercase tracking-[0.25em] text-[#9ba8cc] text-[clamp(0.7rem,2.5vw,1rem)] mb-[clamp(1rem,4vw,2.5rem)]">
+        <p className="uppercase tracking-[0.25em] text-[#0c4a6e] text-[clamp(0.7rem,2.5vw,1rem)] mb-[clamp(1rem,4vw,2.5rem)] font-semibold">
           Hvor mange dager
         </p>
 
         {/* Number */}
         <div className="relative flex items-center justify-center">
           <span
-            className="[font-family:'Archivo_Black'] text-[clamp(5rem,22vw,14rem)] leading-none font-black bg-[linear-gradient(160deg,#ffe9a0_10%,#f5c842_45%,#e8960a_80%)] bg-clip-text text-transparent drop-shadow-[0_0_40px_#f5c84260] relative z-[1] tracking-[-0.02em]"
+            className="[font-family:'Archivo_Black'] text-[clamp(5rem,22vw,14rem)] leading-none font-black bg-[linear-gradient(160deg,#fed7aa_10%,#f97316_45%,#c2410c_80%)] bg-clip-text text-transparent drop-shadow-[0_4px_24px_#f9731640] relative z-[1] tracking-[-0.02em]"
             aria-live="polite"
             aria-label={`${displayed} dager`}
           >
             {displayed}
           </span>
           <div
-            className="absolute w-[120%] h-[120%] rounded-full bg-[radial-gradient(ellipse,#f5c84218_0%,transparent_70%)] animate-pulse-glow pointer-events-none"
+            className="absolute w-[120%] h-[120%] rounded-full bg-[radial-gradient(ellipse,#fbbf2422_0%,transparent_70%)] pointer-events-none"
             aria-hidden="true"
           />
         </div>
 
-        <p className="[font-family:'Archivo_Black'] text-[clamp(1.4rem,5vw,2.8rem)] tracking-[0.18em] uppercase text-[#f5c842] mt-[clamp(-0.2rem,-1vw,-0.5rem)] opacity-90">
+        <p className="[font-family:'Archivo_Black'] text-[clamp(1.4rem,5vw,2.8rem)] tracking-[0.18em] uppercase text-[#f97316] mt-[clamp(-0.2rem,-1vw,-0.5rem)] opacity-90">
           dager
         </p>
 
         <div
-          className="w-[clamp(60px,20vw,120px)] h-px bg-[linear-gradient(90deg,transparent,#f5c84260,transparent)] my-[clamp(1.2rem,3vw,2rem)]"
+          className="w-[clamp(60px,20vw,120px)] h-px bg-[linear-gradient(90deg,transparent,#7dd3fc,transparent)] my-[clamp(1.2rem,3vw,2rem)]"
           aria-hidden="true"
         />
 
-        <p className="uppercase tracking-[0.15em] text-[#c8d0e8] text-[clamp(0.85rem,2.8vw,1.15rem)] mb-[0.4rem]">
+        <p className="uppercase tracking-[0.15em] text-[#0c4a6e] text-[clamp(0.85rem,2.8vw,1.15rem)] mb-[0.4rem] font-semibold">
           siden sommer 2026
         </p>
-        <p className="text-[#5a6282] text-[clamp(0.7rem,2vw,0.85rem)] tracking-[0.08em]">
+        <p className="text-[#0369a1] text-[clamp(0.7rem,2vw,0.85rem)] tracking-[0.08em]">
           24. juni 2026
         </p>
       </div>
-
-      {/* Stars background-images — kept here as they are multi-stop radial-gradient lists */}
-      <style>{`
-        .stars-small  { background-image: radial-gradient(1px 1px at 10% 15%, #fff 0, transparent 100%), radial-gradient(1px 1px at 30% 70%, #fff 0, transparent 100%), radial-gradient(1px 1px at 55% 25%, #fff 0, transparent 100%), radial-gradient(1px 1px at 70% 80%, #fff 0, transparent 100%), radial-gradient(1px 1px at 85% 45%, #fff 0, transparent 100%), radial-gradient(1px 1px at 20% 90%, #fff 0, transparent 100%), radial-gradient(1px 1px at 92% 10%, #fff 0, transparent 100%), radial-gradient(1px 1px at 48% 60%, #fff 0, transparent 100%), radial-gradient(1px 1px at 65% 5%, #fff 0, transparent 100%), radial-gradient(1px 1px at 3% 50%, #fff 0, transparent 100%), radial-gradient(1px 1px at 77% 33%, #fff 0, transparent 100%), radial-gradient(1px 1px at 40% 42%, #fff 0, transparent 100%); }
-        .stars-medium { background-image: radial-gradient(1.5px 1.5px at 22% 8%, #ffe9b0 0, transparent 100%), radial-gradient(1.5px 1.5px at 60% 88%, #ffe9b0 0, transparent 100%), radial-gradient(1.5px 1.5px at 80% 60%, #ffe9b0 0, transparent 100%), radial-gradient(1.5px 1.5px at 15% 55%, #ffe9b0 0, transparent 100%), radial-gradient(1.5px 1.5px at 95% 75%, #ffe9b0 0, transparent 100%), radial-gradient(1.5px 1.5px at 50% 95%, #ffe9b0 0, transparent 100%); }
-        .stars-large  { background-image: radial-gradient(2px 2px at 38% 18%, #fff8e0 0, transparent 100%), radial-gradient(2px 2px at 72% 28%, #fff8e0 0, transparent 100%), radial-gradient(2px 2px at 88% 88%, #fff8e0 0, transparent 100%), radial-gradient(2px 2px at 8% 82%, #fff8e0 0, transparent 100%); }
-      `}</style>
     </div>
   );
 }
